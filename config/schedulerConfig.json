@@ -2,7 +2,10 @@
   "mode": "interval",
   "intervalMinutes": 5,
   "dailyTime": "08:00",
-  "defaultTopic": "Latest Advancements in Agentic AI Workflows",
+  "topics": [
+    "Latest Advancements in Agentic AI Workflows",
+    "Global Tech Startups"
+  ],
   "emails": [
     "rayads2013@gmail.com"
   ]

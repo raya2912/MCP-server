@@ -1,16 +1,40 @@
-export function getSectionPrompt(topic, section) {
-    const baseContext = `You are an expert AI technical writer generating a newsletter about: "${topic}".`;
+export function getDailyUpdatePrompt(topic, previousHistory) {
+    const today = new Date().toLocaleDateString();
     
-    const directives = {
-        "Introduction": `Write a brief, engaging introduction (approx 100 words) highlighting the importance of "${topic}" this week.`,
-        "Big Story of the Week": `Identify the most impactful recent development related to "${topic}". Provide a detailed 150-word analysis.`,
-        "Quick Updates": `Provide 3 to 5 concise bullet points covering minor but noteworthy updates around "${topic}".`,
-        "Top Research Papers": `Summarize 2 recent academic papers related to "${topic}". Include title, authors, and a 50-word summary.`,
-        "Top GitHub Repositories": `List 3 trending open-source GitHub repositories relevant to "${topic}". Provide the repo name and a short description.`,
-        "Quick Tutorial": `Provide a very short, 3-step practical tutorial or code snippet related to a concept in "${topic}".`,
-        "Top AI Products": `Highlight 2 innovative AI products or startups making waves in the space of "${topic}".`,
-        "Top X Posts": `Highlight 2 viral X (Twitter) discussions that experts are having right now about "${topic}".`
-    };
+    return `You are an expert AI technical researcher and analyst. Your task is to provide the daily update for the topic: "${topic}".
+Assume today's date is ${today}.
 
-    return `${baseContext}\n\nTask: ${directives[section] || `Write about ${section}.`}\n\nFormat your output in clean Markdown. Do NOT include the section title as a header, just provide the content.`;
+### Context & Memory
+To avoid repeating old information, here is a summary of what has already been covered in previous updates:
+${previousHistory}
+
+### Task
+Generate a comprehensive but concise daily update on "${topic}". Focus ONLY on new developments, hypothetical recent trends, and fresh insights that do not overlap with the previous history. 
+
+Your response must be formatted in Markdown and include exactly these sections:
+
+## 📢 Latest Developments
+(2-3 bullet points of the most crucial recent news or hypothetical updates)
+
+## 🎯 Key Highlights
+(A short 50-word paragraph summarizing why today's updates matter)
+
+## 🧠 AI-Generated Insights
+(A brief analysis of where this topic might be heading next)
+
+## 📊 Concise Analysis
+(A sharp, analytical breakdown of the current state of this topic)
+`;
+}
+
+export function getSummaryPrompt(topic, updateContent) {
+    return `You are a summarization AI.
+    
+I have generated the following daily update for the topic: "${topic}".
+
+Update Content:
+${updateContent}
+
+Your task: Provide a very brief, 1-2 sentence summary of the key facts covered in this update. This summary will be saved to memory so we do not repeat these facts tomorrow.
+Do not use formatting, just return the plain text summary.`;
 }

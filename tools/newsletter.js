@@ -1,5 +1,6 @@
-import { getSectionPrompt } from '../prompts/index.js';
+import { getDailyUpdatePrompt, getSummaryPrompt } from '../prompts/index.js';
 import { config } from '../config/env.js';
+import { getTopicHistoryContext, addTopicHistory } from '../history/manager.js';
 
 async function callLLM(prompt) {
     // Fallback mock if no API key is set
@@ -20,34 +21,39 @@ async function callLLM(prompt) {
                 temperature: 0.7
             })
         });
-        
         const data = await response.json();
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
         return data.choices[0].message.content;
     } catch (error) {
         return `*Error generating content:* ${error.message}`;
     }
 }
 
+export async function generateDailyUpdate(topic) {
+    const historyContext = getTopicHistoryContext(topic);
+    
+    // Generate the main update
+    const updatePrompt = getDailyUpdatePrompt(topic, historyContext);
+    const updateContent = await callLLM(updatePrompt);
+    
+    // Generate the summary for memory
+    const summaryPrompt = getSummaryPrompt(topic, updateContent);
+    const summary = await callLLM(summaryPrompt);
+    
+    // Save to memory
+    addTopicHistory(topic, summary);
+    
+    let finalContent = `# Daily AI Update: ${topic}\n\n`;
+    finalContent += `*Generated on: ${new Date().toLocaleDateString()}*\n\n`;
+    finalContent += updateContent;
+    
+    return finalContent;
+}
+
+// Keep the old function signature as a wrapper for backward compatibility with external MCP calls if needed,
+// but route it to the new daily update logic.
 export async function generateNewsletterContent(topic) {
-    const sections = [
-        "Introduction", 
-        "Big Story of the Week", 
-        "Quick Updates",
-        "Top Research Papers", 
-        "Top GitHub Repositories",
-        "Quick Tutorial", 
-        "Top AI Products", 
-        "Top X Posts"
-    ];
-
-    let content = `# Weekly AI Newsletter: ${topic}\n\n`;
-
-    for (const section of sections) {
-        content += `## ${section}\n\n`;
-        const prompt = getSectionPrompt(topic, section);
-        const sectionContent = await callLLM(prompt);
-        content += sectionContent.trim() + "\n\n";
-    }
-
-    return content;
+    return generateDailyUpdate(topic);
 }

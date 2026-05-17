@@ -1,7 +1,7 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { generateNewsletterContent } from "../tools/newsletter.js";
+import { generateDailyUpdate } from "../tools/newsletter.js";
 import { analyzeNewsletterContent } from "../tools/analytics.js";
 import fs from 'fs';
 import path from 'path';
@@ -10,7 +10,7 @@ import { startScheduler } from "../scheduler/cron.js";
 
 // Setup directories
 const cwd = process.cwd();
-['outputs', 'analytics', 'logs'].forEach(dir => {
+['outputs', 'analytics', 'logs', 'history'].forEach(dir => {
     if (!fs.existsSync(path.join(cwd, dir))) {
         fs.mkdirSync(path.join(cwd, dir), { recursive: true });
     }
@@ -28,8 +28,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "generate_newsletter",
-        description: "Generates an AI-powered newsletter on a given topic.",
+        name: "generate_daily_update",
+        description: "Generates an intelligent daily update on a given topic, maintaining history to avoid repeating content.",
         inputSchema: {
           type: "object",
           properties: { topic: { type: "string" } },
@@ -38,7 +38,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "analyze_newsletter",
-        description: "Performs NLP analytics on a newsletter.",
+        description: "Performs NLP analytics on an update or newsletter.",
         inputSchema: {
           type: "object",
           properties: { content: { type: "string" } },
@@ -52,14 +52,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
-  if (name === "generate_newsletter") {
-    const content = await generateNewsletterContent(args.topic);
+  if (name === "generate_daily_update" || name === "generate_newsletter") {
+    const content = await generateDailyUpdate(args.topic);
     
-    const filename = `newsletter-${Date.now()}.md`;
+    const safeTopicName = args.topic.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const filename = `update-${safeTopicName}-${Date.now()}.md`;
     fs.writeFileSync(path.join(cwd, 'outputs', filename), content);
 
     return {
-      content: [{ type: "text", text: `Newsletter generated and saved as ${filename}.\n\n${content}` }]
+      content: [{ type: "text", text: `Daily update generated and saved as ${filename}.\n\n${content}` }]
     };
   }
 
@@ -88,6 +89,5 @@ Top Keywords: ${analytics.topKeywords.join(', ')}
 
 const transport = new StdioServerTransport();
 server.connect(transport).then(() => {
-    console.error("🚀 AI Newsletter MCP Server running on stdio");
+    console.error("🚀 Intelligent Topic Tracking MCP Server running on stdio");
 });
-

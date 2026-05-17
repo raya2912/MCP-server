@@ -1,4 +1,4 @@
-import { generateNewsletterContent } from '../tools/newsletter.js';
+import { generateDailyUpdate } from '../tools/newsletter.js';
 import { analyzeNewsletterContent } from '../tools/analytics.js';
 import readline from 'readline';
 import fs from 'fs';
@@ -10,22 +10,23 @@ const rl = readline.createInterface({
 });
 
 console.log("=====================================");
-console.log(" 📰 AI Newsletter Generator CLI");
+console.log(" 🧠 Intelligent Topic Tracking CLI");
 console.log("=====================================\n");
 
-rl.question('Enter the topic for your newsletter (e.g., Agents in AI): ', async (topic) => {
-    console.log(`\n⏳ Generating newsletter for "${topic}"... (This may take a minute)`);
+rl.question('Enter the topic you want to track or update (e.g., Agents in AI): ', async (topic) => {
+    console.log(`\n⏳ Generating daily update for "${topic}"... (This may take a minute)`);
     
-    const content = await generateNewsletterContent(topic);
+    const content = await generateDailyUpdate(topic);
     
-    const outPath = path.join(process.cwd(), 'outputs', `cli-newsletter-${Date.now()}.md`);
+    const safeTopicName = topic.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const outPath = path.join(process.cwd(), 'outputs', `cli-update-${safeTopicName}-${Date.now()}.md`);
     fs.writeFileSync(outPath, content);
-    console.log(`✅ Newsletter saved to ${outPath}`);
+    console.log(`✅ Daily Update saved to ${outPath}`);
 
-    console.log(`\n⏳ Analyzing newsletter...`);
+    console.log(`\n⏳ Analyzing update content...`);
     const analytics = analyzeNewsletterContent(content);
     
-    const anPath = path.join(process.cwd(), 'analytics', `cli-analytics-${Date.now()}.json`);
+    const anPath = path.join(process.cwd(), 'analytics', `cli-analytics-${safeTopicName}-${Date.now()}.json`);
     fs.writeFileSync(anPath, JSON.stringify(analytics, null, 2));
     
     console.log("\n📊 ANALYTICS RESULTS:");
@@ -37,5 +38,3 @@ rl.question('Enter the topic for your newsletter (e.g., Agents in AI): ', async 
 
     rl.close();
 });
-
-
