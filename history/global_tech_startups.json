@@ -1,10 +1,42 @@
 [
   {
-    "date": "2026-05-17T06:55:06.242Z",
+    "date": "2026-05-17T07:05:04.691Z",
     "summary": "*Error generating content:* Incorrect API key provided: your_ope************here. You can find your API key at https://platform.openai.com/account/api-keys."
   },
   {
-    "date": "2026-05-17T07:00:05.098Z",
-    "summary": "*Error generating content:* Incorrect API key provided: your_ope************here. You can find your API key at https://platform.openai.com/account/api-keys."
+    "date": "2026-05-17T07:10:10.611Z",
+    "summary": "*Error generating content:* You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors."
+  },
+  {
+    "date": "2026-05-17T07:15:05.173Z",
+    "summary": "*Error generating content:* You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors."
+  },
+  {
+    "date": "2026-05-17T07:20:05.414Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  {
+    "date": "2026-05-17T07:25:04.670Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  {
+    "date": "2026-05-17T07:30:04.899Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  {
+    "date": "2026-05-17T07:35:06.509Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  {
+    "date": "2026-05-17T07:40:04.714Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  {
+    "date": "2026-05-17T07:45:04.771Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  {
+    "date": "2026-05-17T07:50:04.624Z",
+    "summary": "*Error generating content:* Incorrect API key provided: AIzaSyA8***************************SLUY. You can find your API key at https://platform.openai.com/account/api-keys."
   }
 ]

@@ -13,7 +13,7 @@ The MCP Server runs over `stdio`, allowing it to be integrated easily into local
 ## 3. Prerequisites
 - Node.js (v18 or higher)
 - npm or yarn
-- OpenAI API Key (optional but recommended for actual text generation)
+- Google Gemini API Key (optional but recommended for actual text generation)
 
 ## 4. Installation Steps
 1. Clone the repository or extract the files.
@@ -22,9 +22,9 @@ The MCP Server runs over `stdio`, allowing it to be integrated easily into local
 
 ## 5. Environment Variable Setup
 1. Copy `.env.example` and rename it to `.env`.
-2. Open `.env` and paste your OpenAI API key:
+2. Open `.env` and paste your Google Gemini API key:
    ```env
-   OPENAI_API_KEY=sk-your-real-key-here
+   GEMINI_API_KEY=your_gemini_api_key_here
    ```
 
 ## 6. How to Start the MCP Server
@@ -110,4 +110,4 @@ npm run scheduler
 ### 📋 Logging & Common Errors
 All automated actions are logged inside the `/logs` directory. 
 - **SMTP Authentication Error**: Check that you are using a Google *App Password* and not your standard login password.
-- **Empty Output**: Ensure your `OPENAI_API_KEY` is valid.
+- **Empty Output**: Ensure your `GEMINI_API_KEY` is valid.

@@ -10,6 +10,7 @@
     "scheduler": "node -e \"import('./scheduler/cron.js').then(m => m.startScheduler())\""
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@modelcontextprotocol/sdk": "^1.0.1",
     "dotenv": "^16.6.1",
     "node-cron": "^4.2.1",
